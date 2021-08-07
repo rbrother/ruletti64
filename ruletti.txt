@@ -1,6 +1,3 @@
-
-
-;ruletti.prg ==0801==
    90 gosub 4500:rem alkuparametrit
   100 gosub 4000:rem kuva
   120 :
@@ -168,4 +165,3 @@
  4750 for t=1 to 8:print tab(7)"B                      B":next t
  4760 print tab(7)"JCCCCCCCCCCCCCCCCCCCCCCK{grn}"
  4770 return
-
