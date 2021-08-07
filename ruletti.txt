@@ -1,0 +1,171 @@
+
+
+;ruletti.prg ==0801==
+   90 gosub 4500:rem alkuparametrit
+  100 gosub 4000:rem kuva
+  120 :
+  130 gosub 1000:rem valinnat
+  140 gosub 2000:rem pyoritys
+  150 gosub 3000:rem voitot
+  160 if ra>0 then 130
+  170 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}rahat loppu..."
+  180 print"{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}'f1' - uusi peli"
+  190 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}'f3' - lopetus"
+  200 get a$:if a$=""then 200
+  210 if a$="{f1}"then run
+  220 if a$<>"{f3}"then 200
+  230 print"{clr}":poke 53280,14:poke 53281,6
+  240 end
+  250  
+ 1000 rem ***** valinnat *****
+ 1010 poke 650,128:print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}aseta panoksesi."
+ 1015 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}'f1' = valmis"
+ 1020 pa=0:sn=0:for t=0 to 26:si(t)=0:next t
+ 1025 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}                "
+ 1030 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}rahaa :";ra;"mk."
+ 1035 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}                     "
+ 1040 print"{up}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}sijoitettu :";pa;"mk."
+ 1045 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}----------------------"
+ 1047 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}                     "
+ 1050 print"{up}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}'";
+ 1055 if sn<23 then print sn;:goto 1100
+ 1060 if sn=23 then print"{rvon}{gry1} harmaa {rvof}{grn}";
+ 1070 if sn=24 then print"{rvon}{red} punainen {rvof}{grn}";
+ 1075 if sn=25 then print"1-11";
+ 1080 if sn=26 then print"12-22";
+ 1100 print"' -";si(sn);"mk."
+ 1120 get a$:if a$=""then 1120
+ 1130 if a$<>"{f1}"then 1150
+ 1140 if pa>0 then 1200
+ 1145 goto 1120
+ 1150 if a$="@"and sn>0 then sn=sn-1:goto 1025
+ 1160 if a$="/"and sn<26 then sn=sn+1:goto 1025
+ 1170 if a$="+"and ra>0 then si(sn)=si(sn)+1:ra=ra-1:pa=pa+1:goto 1025
+ 1180 if a$="-"and si(sn)>0 then ra=ra+1:si(sn)=si(sn)-1:pa=pa-1:goto 1025
+ 1190 goto 1120
+ 1200 gosub 4700:poke 650,0
+ 1240 for t=0 to 22
+ 1250 if si(n(t))>0 then poke 1024+x(t)+y(t)*40,170
+ 1260 next t
+ 1265 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}odota..."
+ 1270 return
+ 1990  
+ 2000 rem ***** pyoritys *****
+ 2015 r=int(rnd(0)*23)+40
+ 2030 t=0:k=0:vi=1
+ 2050 poke 781,y(t):poke 780,0:poke 782,0:sys 65520
+ 2055 if int(t/2)=t/2 then v1=2:v2=10:goto 2060
+ 2057 v1=11:v2=12
+ 2060 if t=0 then v1=5:v2=13
+ 2065 if k>r then vi=vi*1.5
+ 2070 poke 646,v2
+ 2080 print tab(x(t))"{rght}{rvon}  {CBM-M}{rvof}"
+ 2085 print tab(x(t))"{rvon} {rght}{rght}{CBM-M}{rvof}"
+ 2090 print tab(x(t))"{rvon}{CBM-P}{CBM-P}{CBM-P}{SHIFT-@}{rvof}{up}{up}{up}"
+ 2095 poke 646,v1:for tt=1 to vi:next tt
+ 2097 if vi>800 then 2160
+ 2100 print tab(x(t))"{rght}{rvon}  {CBM-M}{rvof}"
+ 2105 print tab(x(t))"{rvon} {rght}{rght}{CBM-M}{rvof}"
+ 2110 print tab(x(t))"{rvon}{CBM-P}{CBM-P}{CBM-P}{SHIFT-@}{rvof}"
+ 2120 t=t+1:if t=23 then t=0
+ 2130 k=k+1
+ 2150 goto 2050
+ 2160 t=n(t)
+ 2170 vv=t
+ 2190 return
+ 2990 :
+ 3000 rem ***** voitot *****
+ 3030 gosub 4700
+ 3040 print"{grn}{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}voitot:"
+ 3050 vo=0:print:for t=0 to 22
+ 3060 if t<>vv then 3070
+ 3062 if si(t)=0 then 3070
+ 3065 vo=vo+si(t)*22:print"{grn}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}no.";vv;" voit."si(t)*22"mk."
+ 3070 next t
+ 3075 if vv>12 or si(25)<1 then 3082
+ 3080 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}'1-11' voit. "si(25)*2"mk.":vo=vo+si(25)*2:goto 3090
+ 3082 if si(26)<1 then 3090
+ 3085 if vv>11 then print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}'12-22' voit."si(26)*2"mk.":vo=vo+si(26)*2
+ 3090 if vv=0 then 3120
+ 3092 if int(vv/2)<>vv/2 then 3100
+ 3093 if si(23)=0 then 3120
+ 3095 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rvon}{gry1}harmaa{rvof}{grn} voit.";si(23)*2"mk.":vo=vo+si(23)*2
+ 3097 goto 3120
+ 3100 if si(24)=0 then 3120
+ 3110 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rvon}{red}punainen{rvof}{grn} voit.";si(24)*2"mk.":vo=vo+si(24)*2
+ 3120 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}voitot yht. :";vo;"mk."
+ 3130 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}sijoitukset :";pa
+ 3150 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}tulos       :";vo-pa"mk."
+ 3160 ra=ra+vo
+ 3170 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}rahaa       :";ra
+ 3180 print"{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}    paina 'f1'"
+ 3185 poke 198,0
+ 3190 get a$:if a$<>"{f1}"then 3190
+ 3195 r=1:gosub 4085:gosub 4700:print"{grn}"
+ 3200 return
+ 3990 :
+ 4000 rem **** kuva ****
+ 4010 print"{clr}":poke 53281,0:poke 53280,0
+ 4020 print"{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{orng}"
+ 4030 print"        {CBM-C}{rvon}{CBM-D}{CBM-F}{rvof}{CBM-F}{rvon}{CBM-F}{rvof}{CBM-V}{rvon}{CBM-F}{rvof}{CBM-V}{rvon}{CBM-F}{rvof}{CBM-V} {rvon}{CBM-F}{CBM-I}{rvof}{CBM-K}{rvon}{CBM-D}{CBM-D}{rvof}{CBM-K}{rvon}{CBM-D}{CBM-D}{rvof}{CBM-K}{rvon}{CBM-F}{rvof}{CBM-V}"
+ 4040 print"         {CBM-K}{CBM-D}{CBM-K}{rvon}{CBM-K}{rvof} {rvon}{CBM-K}{rvof} {rvon}{CBM-K}{rvof}  {rvon}{CBM-K}{rvof}{CBM-D}  {CBM-K}  {CBM-K}{rvof} {rvon}{CBM-K}{rvof}{brn}"
+ 4050 print"        {CBM-C}{rvon}{CBM-D}{CBM-D}{rvof} {rvon}{CBM-F}{rvof}{CBM-V}{rvon}{CBM-F}{rvof}{CBM-V}{rvon}{CBM-F}{rvof}{CBM-V} {rvon}{CBM-F}{CBM-F}{rvof} {CBM-C}{rvon}{CBM-D}{rvof} {CBM-C}{rvon}{CBM-D}{rvof} {rvon}{CBM-F}{rvof}{CBM-V}"
+ 4060 print" {rght}       {CBM-K}{rvon}{CBM-F}{rvof} {rvon}{CBM-K}{rvof}{CBM-F}{rvon}{CBM-V}{rvof} {rvon}{CBM-K}{rvof} {CBM-F}{rvon}{CBM-K}{rvof} {CBM-F} {CBM-K}  {CBM-K} {rvon}{CBM-K}{rvof}"
+ 4070 print"        {CBM-C}{rvon}{CBM-I}{rvof}{CBM-C}{CBM-V} {rvon}{CBM-I}{rvof}{CBM-V} {rvon}{CBM-I}{CBM-I}{rvof}{CBM-V}{rvon}{CBM-I}{CBM-I}{rvof}{CBM-V}{CBM-C}{rvon}{CBM-I}{rvof} {CBM-C}{rvon}{CBM-I}{rvof} {rvon}{CBM-I}{rvof}{CBM-V}"
+ 4080 for t=1 to 19:print:for tt=1 to 20:next tt:next t
+ 4082 gosub 4700
+ 4085 for t=0 to 22:poke 781,y(t):poke 780,0:poke 782,0:sys 65520
+ 4090 v=11:if t=0 then v=5:goto 4110
+ 4100 if int(t/2)=t/2 then v=2:goto 4110
+ 4110 poke 646,v:a$=str$(n(t)):a$="{rvon}"+a$
+ 4120 print tab(x(t))"{rvon}   {CBM-M}{rvof}"
+ 4130 print tab(x(t))"{rvon}   {CBM-M}{rvof}"
+ 4140 print tab(x(t))"{rvon}{CBM-P}{CBM-P}{CBM-P}{SHIFT-@}{rvof}"
+ 4150 print"{up}{up}";tab(x(t))a$
+ 4170 next t
+ 4195 if r=1 then r=0:return
+ 4200 m=1:poke 198,0
+ 4210 m$=mid$(tx$,m,22)
+ 4220 print"{grn}{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}";m$
+ 4225 for t=1 to 50:next t
+ 4230 get a$:if a$="{f1}"then 4300
+ 4240 m=m+1:if m=115 then run
+ 4250 goto 4210
+ 4300 :
+ 4400 gosub 4700:poke 650,128
+ 4410 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}paljonko rahaa ?"
+ 4415 print"{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}'f1' = valmis"
+ 4420 ra=10
+ 4425 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}                     "
+ 4430 print"{home}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{down}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}{rght}rahaa :";ra;"mk."
+ 4440 get a$:if a$=""then 4440
+ 4450 if a$="{f1}"then gosub 4700:return
+ 4460 if a$="+"then ra=ra+1
+ 4470 if a$="-"then ra=ra-1
+ 4475 if ra=0 then ra=1
+ 4477 if ra=101 then ra=100
+ 4480 goto 4425
+ 4500  
+ 4510 rem **** parametrit ****
+ 4520 tx$="                     ruletin on tehnyt robert brotherus 17.4 - 1987."
+ 4530 tx$=tx$+"..........paina 'f1' aloittaaksesi pelin.                       "
+ 4540 dim n(23),x(23),y(23),si(27)
+ 4550 for t=0 to 22:read n(t),x(t),y(t):next t
+ 4560 data 0,17,5,8,23,5,1,27,5,16,31,5
+ 4565 data 5,31,8,10,31,11,7,31,14
+ 4570 data 20,31,17,3,31,20,12,27,20
+ 4575 data 17,23,20,14,19,20,19,15,20
+ 4580 data 6,11,20,9,7,20,2,3,20
+ 4585 data 21,3,17,22,3,14,11,3,11
+ 4590 data 18,3,8,15,3,5,4,7,5,13,11,5
+ 4640 return
+ 4650  
+ 4700 rem ****** tyhjennys *****
+ 4710 print"{gry3}{home}{down}{down}{down}{down}{down}{down}{down}{down}";
+ 4720 print tab(7)"UCCCCCCCCCCCCCCCCCCCCCCI"
+ 4730 print tab(7)"B                      B"
+ 4740 print tab(7)"{CBM-Q}CCCCCCCCCCCCCCCCCCCCCC{CBM-W}"
+ 4750 for t=1 to 8:print tab(7)"B                      B":next t
+ 4760 print tab(7)"JCCCCCCCCCCCCCCCCCCCCCCK{grn}"
+ 4770 return
+
